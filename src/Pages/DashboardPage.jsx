@@ -6,8 +6,11 @@ const DashboardPage = () => {
   return (
     <div>
         <h2>Dashboard</h2>
+        <hr />
+        Test records
         <TestRecords />
-        Select a test
+        <hr />
+        Test selection
         <TestSelect />
     </div>
   )

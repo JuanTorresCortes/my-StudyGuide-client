@@ -47,7 +47,11 @@ const LoginForm = () => {
         flexDirection: 'column',
         gap: 3,
         width: '300px',
-        margin: '1em auto'
+        margin: '1em auto',
+        border: "2px solid black",
+        padding: "12px",
+        backgroundColor: "rgb(55, 133, 212)",
+        boxShadow: 15
       }}
       onSubmit={handleLogin}
     >
