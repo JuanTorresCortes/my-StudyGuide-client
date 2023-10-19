@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { loginUser } from '../Api/api'
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +15,7 @@ const LoginForm = () => {
       email,
       password
     }
-    // const loginResult = await 
+     const response = await loginUser()
   };
 
   return (

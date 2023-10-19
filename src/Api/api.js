@@ -17,7 +17,7 @@ const registerUser = async (userData) => {
 // Function to log in a user by making a POST request to the server
 const loginUser = async (userData) => {
   try {
-    const response = await axios.post(`${baseUrl}/users/login`, userData);
+    const response = await axios.post(`${baseUrl}/users/login-user`, userData);
     return response.data;
   } catch (error) {
     //return { success: false, error: error.response.data }; // Return an object with a success field set to false and the error data

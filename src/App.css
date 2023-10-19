@@ -62,3 +62,9 @@ button {
   display: flex;
   justify-content: space-between;
 }
+
+.error-ul {
+  border: 2px solid blue;
+  background-color: red;
+  list-style: none;
+}
