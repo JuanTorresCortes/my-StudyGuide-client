@@ -2,9 +2,12 @@ import axios from "axios";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 // // Function to register a new user by making a POST request to the server
-exports.registerUser = async (userData) => {
+const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${baseUrl}/users/register`, userData);
+    const response = await axios.post(
+      `${baseUrl}/users/register-user`,
+      userData
+    );
     return response.data;
   } catch (error) {
     return error.response.data;
@@ -12,7 +15,7 @@ exports.registerUser = async (userData) => {
 };
 
 // Function to log in a user by making a POST request to the server
-exports.loginUser = async (userData) => {
+const loginUser = async (userData) => {
   try {
     const response = await axios.post(`${baseUrl}/users/login`, userData);
     return response.data;
@@ -23,7 +26,7 @@ exports.loginUser = async (userData) => {
 };
 
 // Function to validate a user's token by making a GET request to the server
-exports.validateUser = async (userToken) => {
+const validateUser = async (userToken) => {
   try {
     const response = await axios.get(`${baseUrl}/users/validate`, {
       headers: {
@@ -40,7 +43,7 @@ exports.validateUser = async (userToken) => {
   }
 };
 
-exports.uploadTest = async (testData) => {
+const uploadTest = async (testData) => {
   try {
     const response = await axios.post(`${baseUrl}/tests/upload-test`, testData);
     return response.data; // Return the data directly if successful
@@ -57,3 +60,5 @@ exports.uploadTest = async (testData) => {
     }
   }
 };
+
+export { registerUser, loginUser, validateUser, uploadTest };
