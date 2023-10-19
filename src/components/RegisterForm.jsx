@@ -1,6 +1,22 @@
-import React from 'react'
+import React,{ useState } from 'react'
 
 const RegisterForm = () => {
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [varPassword, setVarPassword] = useState("")
+  const [firstNam, setFirstNam] = useState("");
+
+  const handleOnSubmit = async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+
   return (
     
     <form action="Onsubmit" className='register-form'>
