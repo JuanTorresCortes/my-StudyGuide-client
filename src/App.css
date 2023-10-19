@@ -68,3 +68,25 @@ button {
   background-color: red;
   list-style: none;
 }
+
+.test-records {
+  width: 90%;
+  border: 2px solid blue;
+  padding: 1em;
+  background-color: rgb(55, 133, 212);
+}
+
+.test-select {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border: 2px solid blue;
+  background-color: rgb(55, 133, 212);
+  margin-top: 1em;
+}
+
+.test-select-card {
+  border: 2px solid blue;
+  padding: 12px;
+  margin: 8px;
+}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -7,15 +8,35 @@ import { loginUser } from '../Api/api'
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState("")
+  const [error, setErrors] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    let errorArray = [];
+
     const data = {
       email,
       password
     }
-     const response = await loginUser()
+
+     const response = await loginUser(data)
+
+     if (response.success === false) {
+        const err = response.error;
+        console.log(err)
+        for (const item in err) {
+            errorArray.push(err[item]);
+        }
+      }
+      setErrors(errorArray);
+
+      if(errorArray.length === 0){
+       setEmail("");
+       setPassword("");
+        navigate('/')
+      }
   };
 
   return (
