@@ -4,7 +4,7 @@ import RegisterForm from '../components/RegisterForm'
 const LandingPage = () => {
   return (
     <>
-        <h1>Welcome to MathLab</h1>
+        <h1>Welcome to StudyLab</h1>
         <RegisterForm />
     </>
    

@@ -113,6 +113,7 @@ const RegisterForm = () => {
         <option value="11th">11th grade</option>
         <option value="12th">12th grade</option>
       </select>
+      Dev password: Battaglia8! 
       <input 
         type='password' 
         placeholder='Create password' 
