@@ -4,6 +4,8 @@ import './App.css';
 import NavBar from './components/NavBar';
 import {getUserToken,removeUserToken} from './Auth/authLocalStorage'
 import {validateUser} from './Api/api'
+import { CssBaseline, Container, Box } from '@mui/material';
+
 
 function App() {
   const [userToken, setUserToken] = useState("");
@@ -53,10 +55,20 @@ useEffect(() => {
   }, [userToken]);
 
   return (
-    <> 
-    <NavBar userName={userName} isVerified={isVerified} setShouldRefresh={setShouldRefresh} setUserName={setUserName} setIsVerified={setIsVerified}/>
-    <Outlet context={{userToken, setUserToken, setShouldRefresh ,userInfo}}/>
-    </>
+    <Box style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <CssBaseline />
+
+    <Box flexGrow={1}>
+      <NavBar
+        userName={userName}
+        isVerified={isVerified}
+        setShouldRefresh={setShouldRefresh}
+        setUserName={setUserName}
+        setIsVerified={setIsVerified}
+      />
+        <Outlet context={{ userToken, setUserToken, setShouldRefresh, userInfo }} />
+    </Box>
+  </Box>
   );
 }
 

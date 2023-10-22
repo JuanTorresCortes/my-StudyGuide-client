@@ -22,7 +22,7 @@ const NavBar = ({ isVerified, setIsVerified, userName,setUserName, setShouldRefr
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           StudyLab
@@ -44,10 +44,8 @@ const NavBar = ({ isVerified, setIsVerified, userName,setUserName, setShouldRefr
           </>
         ) : (
           <>
-            <Button color="inherit" onClick={() => navigate('/')}>Home</Button>
             <Button color="inherit" onClick={() => navigate('/login')}>Login</Button>
-            <Button color="inherit" onClick={() => navigate('/Dashboard')}>Dashboard</Button>
-            <Button color="inherit" onClick={() => navigate('/test')}>Test Page</Button>
+            <Button color="inherit" onClick={() => navigate('/loginAdmin')}>Admin</Button> 
           </>
         )}
       </Toolbar>

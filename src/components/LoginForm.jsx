@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import {
+  TextField, Button, Typography, Box, Avatar, Link, Grid, CssBaseline,
+  FormControlLabel, Checkbox
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { loginUser } from '../Api/api'
 import {setUserToken} from '../Auth/authLocalStorage'
 
@@ -51,42 +53,124 @@ const LoginForm = () => {
   
   }
   return (
-    <Box
-      component="form"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 3,
-        width: '300px',
-        margin: '1em auto',
-        border: "2px solid black",
-        padding: "12px",
-        backgroundColor: "rgb(55, 133, 212)",
-        boxShadow: 15
-      }}
-      onSubmit={handleOnSubmit}
-    >
-      Dev password: Battaglia8! 
-      <TextField
-        label="Email"
-        variant="outlined"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <TextField
-        label="Password"
-        variant="outlined"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <Button variant="contained" color="primary" type="submit">
-        Login
-      </Button>
-    </Box>
+  //   <Box
+  //   component="form"
+  //   sx={{
+  //     display: 'flex',
+  //     flexDirection: 'column',
+  //     gap: 3,
+  //     width: '300px',
+  //     margin: '1em',
+  //     border: "2px solid black",
+  //     padding: "16px",
+  //     boxShadow: 15
+  //   }}
+  //   onSubmit={handleOnSubmit}
+  // >
+  //   <Typography variant="h6" gutterBottom align="center">
+  //     Login to StudyLab
+  //   </Typography>
+
+  //   <Typography variant="body2" gutterBottom>
+  //     Dev password: Battaglia8!
+  //   </Typography>
+
+  //   {error && (
+  //     <List>
+  //       <ListItem style={{ color: 'red', fontSize: '0.9rem' }}>
+  //         {error}
+  //       </ListItem>
+  //     </List>
+  //   )}
+
+  //   <TextField
+  //     label="Email"
+  //     variant="outlined"
+  //     type="email"
+  //     value={email}
+  //     onChange={(e) => setEmail(e.target.value)}
+  //     required
+  //   />
+  //   <TextField
+  //     label="Password"
+  //     variant="outlined"
+  //     type="password"
+  //     value={password}
+  //     onChange={(e) => setPassword(e.target.value)}
+  //     required
+  //   />
+  //   <Button variant="contained" color="primary" type="submit">
+  //     Login
+  //   </Button>
+  // </Box> 
+
+  <Box
+  component="form"
+  noValidate
+  onSubmit={handleOnSubmit}
+  sx={{ mt: 1 }}
+>
+  <CssBaseline />
+  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+    <LockOutlinedIcon />
+  </Avatar>
+  <Typography component="h1" variant="h5">
+    Sign in
+  </Typography>
+  {error && (
+    <Typography variant="body2" style={{ color: 'red' }}>
+      {error}
+    </Typography>
+  )}
+  <TextField
+    margin="normal"
+    required
+    fullWidth
+    id="email"
+    label="Email Address"
+    name="email"
+    autoComplete="email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    autoFocus
+  />
+  <TextField
+    margin="normal"
+    required
+    fullWidth
+    name="password"
+    label="Password"
+    type="password"
+    id="password"
+    autoComplete="current-password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+  />
+  {/* <FormControlLabel
+    control={<Checkbox value="remember" color="primary" />}
+    label="Remember me"
+  /> */}
+  <Button
+    type="submit"
+    fullWidth
+    variant="contained"
+    sx={{ mt: 3, mb: 2 }}
+  >
+    Sign In
+  </Button>
+  <Grid container>
+    {/* <Grid item xs>
+      <Link href="#" variant="body2">
+        Forgot password?
+      </Link>
+    </Grid> */}
+    <Grid item>
+      <Link href="/" variant="body2">
+        {"Don't have an account? Sign Up"}
+      </Link>
+    </Grid>
+  </Grid>
+</Box>
   );
 };
 

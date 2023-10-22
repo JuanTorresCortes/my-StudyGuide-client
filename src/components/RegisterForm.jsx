@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import {
+  Avatar, Button, TextField, Grid, Box, Typography, Container, Link, List, ListItem, FormControl, InputLabel, Select, MenuItem
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
 import {registerUser} from '../Api/api'
 
 const RegisterForm = () => {
@@ -74,61 +79,139 @@ const RegisterForm = () => {
     }
 
   return (
-    <form onSubmit={handleOnSubmit} className='register-form'>
-      <h3>Sign up for a free account</h3>
-     
-      {errors.length > 0 && (
-        <ul className='error-ul'>
-          {errors.map((error, index) => <li key={index}>{error}</li>)}
-        </ul>
-      )}
-      <div>
-        <input 
-          type="text" 
-          placeholder='First name' 
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <input 
-          type="text" 
-          placeholder='Last name' 
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-      </div>
-      <input 
-        type='text' 
-        placeholder='Email address'
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <select value={gradeLevel} onChange={(e) => setGradeLevel(e.target.value)}>
-      <option value="" disabled selected>Select Grade Level</option>
-        <option value="5th">5th grade</option>
-        <option value="6th">6th grade</option>
-        <option value="7th">7th grade</option>
-        <option value="8th">8th grade</option>
-        <option value="9th">9th grade</option>
-        <option value="10th">10th grade</option>
-        <option value="11th">11th grade</option>
-        <option value="12th">12th grade</option>
-      </select>
-      Dev password: Battaglia8! 
-      <input 
-        type='password' 
-        placeholder='Create password' 
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <input 
-        type='password' 
-        placeholder='Verify password'
-        value={varPassword}
-        onChange={(e) => setVarPassword(e.target.value)}
-      />
-      <button type="submit">Register</button>
-    </form>
-  )
+    <Container component="main" maxWidth="xs">
+      <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '0', // Use padding for a bit of spacing
+      width: '100%',    // Ensure the box takes the full width
+      height: '15em'
+    }}
+  >
+        <Avatar sx={{ bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h3" variant="h5" sx={{ mb: 1 }}>
+          Sign Up
+        </Typography>
+
+        {errors.length > 0 && (
+          <List>
+            {errors.map((error, index) => (
+              <ListItem key={index} style={{ color: 'red' }}>
+                {error}
+              </ListItem>
+            ))}
+          </List>
+        )}
+
+        <Box component="form" noValidate onSubmit={handleOnSubmit} >
+          <Grid container spacing={.3}>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                margin="small"
+                size="small"
+                label='First name'
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                margin="small"
+                size="small"
+                label='Last name'
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                margin="small"
+                size="small"
+                label='Email address'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl 
+                fullWidth  
+                margin="small"
+                size="small">
+                <InputLabel>Select Grade Level</InputLabel>
+                <Select value={gradeLevel} onChange={(e) => setGradeLevel(e.target.value)}>
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value="5th">5th grade</MenuItem>
+                  <MenuItem value="6th">6th grade</MenuItem>
+                  <MenuItem value="7th">7th grade</MenuItem>
+                  <MenuItem value="8th">8th grade</MenuItem>
+                  <MenuItem value="9th">9th grade</MenuItem>
+                  <MenuItem value="10th">10th grade</MenuItem>
+                  <MenuItem value="11th">11th grade</MenuItem>
+                  <MenuItem value="12th">12th grade</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                margin="small"
+                size="small"
+                type='password'
+                label='Create password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                margin="small"
+                size="small"
+                type='password'
+                label='Verify password'
+                value={varPassword}
+                onChange={(e) => setVarPassword(e.target.value)}
+                required
+              />
+            </Grid>
+          </Grid>
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            margin="small"
+            size="small"
+          >
+            Register
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/login" variant="body2">
+                Already have an account? Sign in
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
+    
+);
 }
 
 export default RegisterForm;

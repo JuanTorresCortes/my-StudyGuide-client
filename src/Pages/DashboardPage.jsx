@@ -1,19 +1,21 @@
-import React from 'react'
-import TestRecords from '../components/TestRecords'
-import TestSelect from '../components/TestSelect'
+import React from 'react';
+import { Typography, Divider, Container, Box } from '@mui/material';
+import TestSelect from '../components/TestSelect';
 
 const DashboardPage = () => {
   return (
-    <div>
-        <h2>Dashboard</h2>
-        <hr />
-        Test records
-        <TestRecords />
-        <hr />
-        Test selection
-        <TestSelect />
-    </div>
-  )
+    <Container maxWidth="md">
+      <Box my={4}>
+        <Divider variant="middle" />
+        <Box my={3}>
+          <Typography variant="h6" gutterBottom>
+            Test Selection
+          </Typography>
+          <TestSelect />
+        </Box>
+      </Box>
+    </Container>
+  );
 }
 
-export default DashboardPage 
+export default DashboardPage;
