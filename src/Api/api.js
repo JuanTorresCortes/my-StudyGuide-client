@@ -66,9 +66,26 @@ const getTestBySub = async (sub) => {
     const response = await axios.get(`${baseUrl}/tests/get-test-topic/${sub}`);
     return response.data;
   } catch (error) {
+    //console.log(error);
+    return error.response.data;
+  }
+};
+
+const getTestKey = async (keyID) => {
+  try {
+    const response = await axios.get(`${baseUrl}/testKey/get-key-id/${keyID}`);
+    return response.data;
+  } catch (error) {
     console.log(error);
     return error.response.data;
   }
 };
 
-export { registerUser, loginUser, validateUser, uploadTest, getTestBySub };
+export {
+  registerUser,
+  loginUser,
+  validateUser,
+  uploadTest,
+  getTestBySub,
+  getTestKey,
+};

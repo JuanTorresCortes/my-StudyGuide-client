@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Paper, Button } from '@mui/material';
 
-const ScanTron = ({ testLength = 36 }) => {
+const ScanTron = ({testKey}) => {
+  const [answerKey, setAnswerKey] = useState(null);
+  const [testLength, setTestLength] = useState(30)
   const [answers, setAnswers] = useState({});
   const [submittedAnswers, setSubmittedAnswers] = useState([]);
+
+  const navigate = useNavigate();
 
   const handleRadioChange = (question, event) => {
     setAnswers({
       ...answers,
       [question]: event.target.value
     });
+    
   };
 
   const handleSubmit = () => {
@@ -18,6 +24,12 @@ const ScanTron = ({ testLength = 36 }) => {
     setSubmittedAnswers(answersArray);
     console.log(submittedAnswers)
   };
+
+  // _id: { type: String, default: uuid },
+  // testTopic: { type: String, required: true },
+  // owner: { type: String, ref: "user", required: true },
+  // score: { type: String, required: true },
+  // createdAT: { type: Date, default: Date.now },
 
   const oddOptions = ['A', 'B', 'C', 'D'];
   const evenOptions = ['F', 'G', 'H', 'J'];
