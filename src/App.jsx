@@ -1,5 +1,8 @@
+import { pdfjs } from 'react-pdf';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
 import React, { useState, useEffect, } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import './App.css';
 import NavBar from './components/NavBar';
 import {getUserToken,removeUserToken} from './Auth/authLocalStorage'
@@ -8,12 +11,22 @@ import { CssBaseline, Container, Box } from '@mui/material';
 
 
 function App() {
+
   const [userToken, setUserToken] = useState("");
   const [shouldRefresh, setShouldRefresh] = useState("")
   const [userName, setUserName] = useState(null)
   const [userInfo, setUserInfo] = useState({})
   const [isVerified, setIsVerified] = useState(false)
+  const [test, setTest] = useState({})
 
+  // useEffect(()=>{
+  //   const testing = () =>{
+  //     console.log(test)
+  //   }
+  //   testing()
+  // }, [test])
+
+  const navigate = useNavigate();
 
 // Effect hook to check and set the user token from local storage on component mount
   // When the component mounts, check for the user token in local storage and set it in state.
@@ -42,11 +55,12 @@ useEffect(() => {
           setIsVerified(true);
         } else {
           setShouldRefresh(false);
+
           const resultLogout = await removeUserToken();
           if (resultLogout) {
             setIsVerified(false);
-            setUser(null);
             setShouldRefresh(false);
+            navigate("/")
           }
         }
       }
@@ -66,7 +80,7 @@ useEffect(() => {
         setUserName={setUserName}
         setIsVerified={setIsVerified}
       />
-        <Outlet context={{ userToken, setUserToken, setShouldRefresh, userInfo }} />
+        <Outlet context={{ userToken, setUserToken, setShouldRefresh, userInfo,test, setTest }} />
     </Box>
   </Box>
   );

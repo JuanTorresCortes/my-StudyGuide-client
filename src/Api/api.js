@@ -61,4 +61,14 @@ const uploadTest = async (testData) => {
   }
 };
 
-export { registerUser, loginUser, validateUser, uploadTest };
+const getTestBySub = async (sub) => {
+  try {
+    const response = await axios.get(`${baseUrl}/tests/get-test-topic/${sub}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response.data;
+  }
+};
+
+export { registerUser, loginUser, validateUser, uploadTest, getTestBySub };
