@@ -62,7 +62,6 @@ const [testSub, setTestSub] = useState("");
           </CardContent>
           <CardActions>
             <Button size="small" value="math" onClick={() => setTestSub('math')}>Start Test</Button>
-            <Button size="small">test scores</Button>
           </CardActions>
         </Card>
       </Grid>
@@ -86,7 +85,6 @@ const [testSub, setTestSub] = useState("");
           </CardContent>
           <CardActions>
             <Button size="small" value="science" onClick={() => setTestSub('science')}>Start Test</Button>
-            <Button size="small">test scores</Button>
           </CardActions>
         </Card>
       </Grid>
@@ -110,7 +108,6 @@ const [testSub, setTestSub] = useState("");
           </CardContent>
           <CardActions>
             <Button size="small" value={"reading"} onClick={() => setTestSub('reading')}>Start Test</Button>
-            <Button size="small" value={"reading"} >test scores</Button>
           </CardActions>
         </Card>
       </Grid>

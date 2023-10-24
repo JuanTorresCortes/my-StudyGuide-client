@@ -47,3 +47,9 @@ const TestPage = () => {
 };
 
 export default TestPage;
+
+// xs: extra-small devices (phones)
+// sm: small devices (tablets)
+// md: medium devices (some desktops)
+// lg: large devices (most desktops)
+// xl: extra-large devices (large desktops or TVs)

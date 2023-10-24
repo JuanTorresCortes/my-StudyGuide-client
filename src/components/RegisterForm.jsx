@@ -1,14 +1,27 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  Avatar, Button, TextField, Grid, Box, Typography, Container, Link, List, ListItem, FormControl, InputLabel, Select, MenuItem
-} from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+  Avatar,
+  Button,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Link,
+  List,
+  ListItem,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
-import {registerUser} from '../Api/api'
+import { registerUser } from "../Api/api";
 
 const RegisterForm = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -22,7 +35,7 @@ const RegisterForm = () => {
     e.preventDefault();
 
     let errorArray = [];
-
+    ////////////// refactor to array with validations then loop over array rules ///////////////////////////
     if (!firstName.trim()) {
       errorArray.push("First name is required");
     }
@@ -52,45 +65,43 @@ const RegisterForm = () => {
       lastName,
       gradeLevel,
       email,
-      password
-    }
+      password,
+    };
 
-      const response = await registerUser(userData);
+    const response = await registerUser(userData);
 
-      if (response.success === false) {
-        const err = response.error;
-        console.log(err)
-        for (const item in err) {
-            errorArray.push(err[item]);
-        }
+    if (response.success === false) {
+      const err = response.error;
+      console.log(err);
+      for (const item in err) {
+        errorArray.push(err[item]);
+      }
     }
-    
 
     setErrors(errorArray);
 
-          
-      if(errorArray.length === 0){
-        setFirstName("")
-        setLastName("")
-        setEmail("")
-        setPassword("")
-        navigate('/login')
-      }
+    if (errorArray.length === 0) {
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      navigate("/login");
     }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: '0', // Use padding for a bit of spacing
-      width: '100%',    // Ensure the box takes the full width
-      height: '15em'
-    }}
-  >
-        <Avatar sx={{ bgcolor: 'secondary.main' }}>
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "0", // Use padding for a bit of spacing
+          width: "100%", // Ensure the box takes the full width
+          height: "15em",
+        }}
+      >
+        <Avatar sx={{ bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h3" variant="h5" sx={{ mb: 1 }}>
@@ -100,22 +111,21 @@ const RegisterForm = () => {
         {errors.length > 0 && (
           <List>
             {errors.map((error, index) => (
-              <ListItem key={index} style={{ color: 'red' }}>
+              <ListItem key={index} style={{ color: "red" }}>
                 {error}
               </ListItem>
             ))}
           </List>
         )}
 
-        <Box component="form" noValidate onSubmit={handleOnSubmit} >
-          <Grid container spacing={.3}>
-
+        <Box component="form" noValidate onSubmit={handleOnSubmit}>
+          <Grid container spacing={0.3}>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 margin="small"
                 size="small"
-                label='First name'
+                label="First name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 required
@@ -126,7 +136,7 @@ const RegisterForm = () => {
                 fullWidth
                 margin="small"
                 size="small"
-                label='Last name'
+                label="Last name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 required
@@ -137,19 +147,19 @@ const RegisterForm = () => {
                 fullWidth
                 margin="small"
                 size="small"
-                label='Email address'
+                label="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControl 
-                fullWidth  
-                margin="small"
-                size="small">
+              <FormControl fullWidth margin="small" size="small">
                 <InputLabel>Select Grade Level</InputLabel>
-                <Select value={gradeLevel} onChange={(e) => setGradeLevel(e.target.value)}>
+                <Select
+                  value={gradeLevel}
+                  onChange={(e) => setGradeLevel(e.target.value)}
+                >
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
@@ -169,8 +179,8 @@ const RegisterForm = () => {
                 fullWidth
                 margin="small"
                 size="small"
-                type='password'
-                label='Create password'
+                type="password"
+                label="Create password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -181,8 +191,8 @@ const RegisterForm = () => {
                 fullWidth
                 margin="small"
                 size="small"
-                type='password'
-                label='Verify password'
+                type="password"
+                label="Verify password"
                 value={varPassword}
                 onChange={(e) => setVarPassword(e.target.value)}
                 required
@@ -210,12 +220,10 @@ const RegisterForm = () => {
         </Box>
       </Box>
     </Container>
-    
-);
-}
+  );
+};
 
 export default RegisterForm;
-
 
 //   _id: { type: String, default: uuid },
 //   firstName: { type: String, required: true },

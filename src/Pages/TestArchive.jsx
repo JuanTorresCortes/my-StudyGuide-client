@@ -32,7 +32,7 @@ useEffect(() => {
     <h3>Test Archive</h3>
     <Button onClick={() => navigate("/Dashboard")}>Back to Dashboard</Button>
     <Grid container spacing={3}> {/* This is the Grid container */}
-      {completedTests.map((test) => (
+      {completedTests.slice().reverse().map((test) => (  // Use slice() to create a copy of the array, then reverse() to reverse its order
         <Grid item xs={12} sm={6} md={12} key={test._id}>
           <Card elevation={12}>
             <CardContent>
@@ -45,6 +45,7 @@ useEffect(() => {
       ))}
     </Grid>
   </Container>
+
   )
 }
 
