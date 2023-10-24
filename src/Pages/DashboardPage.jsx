@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import { Typography, Divider, Container, Box } from '@mui/material';
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import { Typography, Divider, Container, Box, Button } from '@mui/material';
 import TestSelect from '../components/TestSelect';
 
 const DashboardPage = () => {
   const [grade, setGrade] = useState("");
-  
+  const navigate = useNavigate();
 
   const { userInfo, setTest} = useOutletContext()
   const { gradeLevel } = userInfo;
@@ -20,7 +20,8 @@ const DashboardPage = () => {
         <Divider variant="middle" />
         <Box my={3}>
           <Typography variant="h6" gutterBottom>
-            Test Selection
+            Test Selection <br />
+            <Button onClick={() => navigate("/archive")}>Test Archive</Button>
           </Typography>
           <TestSelect grade={grade} setTest={setTest} />
         </Box>

@@ -45,7 +45,7 @@ const NavBar = ({ isVerified, setIsVerified, userName,setUserName, setShouldRefr
         ) : (
           <>
             <Button color="inherit" onClick={() => navigate('/login')}>Login</Button>
-            <Button color="inherit" onClick={() => navigate('/loginAdmin')}>Admin</Button> 
+            <Button color="inherit" onClick={() => navigate('/admin')}>Admin</Button> 
           </>
         )}
       </Toolbar>

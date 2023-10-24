@@ -1,42 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {addCompletedTest} from '../Api/api'
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Paper, Button } from '@mui/material';
 
-const ScanTron = ({testKey}) => {
-  const [answerKey, setAnswerKey] = useState(null);
-  const [testLength, setTestLength] = useState(30)
-  const [answers, setAnswers] = useState({});
+const ScanTron = ({testKey, testTopic, _id}) => {
+  const [keyArr, setKeyArr] = useState([]);
+  const [testLength, setTestLength] = useState(40);
+  const [onChangeAnswers, setOnChangeAnswers] = useState({});
   const [submittedAnswers, setSubmittedAnswers] = useState([]);
+  const [score, setScore] = useState('')
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const setUp = async () => {
+        if (testKey) {
+            let keyData = testKey.data.key;
+            let keyLength = keyData.length;
+
+            setKeyArr(keyData);
+            setTestLength(keyLength);
+        }
+    }
+    setUp();
+}, [testKey]);
+
   const handleRadioChange = (question, event) => {
-    setAnswers({
-      ...answers,
+    setOnChangeAnswers({
+      ...onChangeAnswers,
       [question]: event.target.value
     });
-    
   };
 
-  const handleSubmit = () => {
-    // Convert answers object into an array
-    const answersArray = Array.from({ length: testLength }, (_, index) => answers[`question${index + 1}`] || '');
+  const handleSubmit = async () => {
+    const answersArray = Array.from({ length: testLength }, (_, index) => onChangeAnswers[`question${index + 1}`] || '');
     setSubmittedAnswers(answersArray);
-    console.log(submittedAnswers)
-  };
+  
+    // Calculate score
+    let count = 0;
+    for (let i = 0; i < keyArr.length; i++) {
+        if (keyArr[i] === answersArray[i]) {
+            count++;
+        }
+    }
+    const equation = 100/testLength * count;
+    setScore(equation.toString());  // Convert score to string if your schema requires it
 
-  // _id: { type: String, default: uuid },
-  // testTopic: { type: String, required: true },
-  // owner: { type: String, ref: "user", required: true },
-  // score: { type: String, required: true },
-  // createdAT: { type: Date, default: Date.now },
+    // Create an object based on the Mongoose schema
+    const completedTest = {
+        testTopic, 
+        score: equation.toString()  // Use the calculated score directly and convert to string
+    };
+
+    try {
+        const response = await addCompletedTest(_id, completedTest);
+        if (response.success === true) {
+            setKeyArr([]);
+            setOnChangeAnswers({});
+            setSubmittedAnswers([]);
+            setScore('');  // Reset score to an empty string
+            navigate("/archive");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
 
   const oddOptions = ['A', 'B', 'C', 'D'];
   const evenOptions = ['F', 'G', 'H', 'J'];
 
+
   return (
-    // style={{ padding: '20px', maxWidth: '400px', margin: '20px auto' }}
-    <Paper style={{  maxWidth:'100%', maxHeight: '60vh', overflowY: 'auto' }}  className='dev-border'>
+    <Paper style={{ maxWidth:'100%', maxHeight: '60vh', overflowY: 'auto' }}  className='dev-border'>
       <h3>ScanTron</h3>
       {Array.from({ length: testLength }).map((_, index) => {
         const questionNumber = index + 1;
@@ -47,7 +82,7 @@ const ScanTron = ({testKey}) => {
               <RadioGroup
                 row
                 name={`question${questionNumber}`}
-                value={answers[`question${questionNumber}`] || ''}
+                value={onChangeAnswers[`question${questionNumber}`] || ''}
                 onChange={(e) => handleRadioChange(`question${questionNumber}`, e)}
               >
                 {(questionNumber % 2 === 1 ? oddOptions : evenOptions).map((option) => (

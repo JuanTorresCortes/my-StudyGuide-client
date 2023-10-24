@@ -8,8 +8,10 @@ import './index.css'
 import TestPage from './Pages/TestPage.jsx';
 import LoginPage from './Pages/LoginPage.jsx';
 import DashboardPage from './Pages/DashboardPage.jsx';
+import TestArchive from './Pages/TestArchive.jsx'
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AdminLogin from './Pages/AdminLogin.jsx'
 
 
 const router = createBrowserRouter([
@@ -33,13 +35,24 @@ const router = createBrowserRouter([
       {
         path: '/test',
         element: <TestPage />,
-      }
+      },
+      {
+        path: '/archive',
+        element: <TestArchive />
+      },
     ]
   },
   {
     path: '/landingPage',
     element: <LandingPage />
   },
+  {
+    path: '/admin',
+    element: <AdminLogin />,
+    children: [
+     
+    ]
+  }
 ])
 
 

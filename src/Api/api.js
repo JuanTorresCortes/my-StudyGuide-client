@@ -81,6 +81,39 @@ const getTestKey = async (keyID) => {
   }
 };
 
+const addCompletedTest = async (userID, testScoreData) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:4000/test-complete/add-completed-test/${userID}`,
+      testScoreData
+    );
+    return response.data;
+    console.log("Test successfully added:", response.data);
+  } catch (error) {
+    console.error("Error adding test:", error);
+  }
+};
+
+const getCompletedTest = async (id) => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/test-complete/get-completed-test/${id}`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error getting test:", error);
+  }
+};
+
+const loginAdmin = async () => {
+  try {
+    const response = await axios.post(`${baseUrl}/users/login-user`, userData);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export {
   registerUser,
   loginUser,
@@ -88,4 +121,7 @@ export {
   uploadTest,
   getTestBySub,
   getTestKey,
+  addCompletedTest,
+  getCompletedTest,
+  loginAdmin,
 };

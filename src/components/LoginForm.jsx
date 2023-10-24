@@ -53,57 +53,6 @@ const LoginForm = () => {
   
   }
   return (
-  //   <Box
-  //   component="form"
-  //   sx={{
-  //     display: 'flex',
-  //     flexDirection: 'column',
-  //     gap: 3,
-  //     width: '300px',
-  //     margin: '1em',
-  //     border: "2px solid black",
-  //     padding: "16px",
-  //     boxShadow: 15
-  //   }}
-  //   onSubmit={handleOnSubmit}
-  // >
-  //   <Typography variant="h6" gutterBottom align="center">
-  //     Login to StudyLab
-  //   </Typography>
-
-  //   <Typography variant="body2" gutterBottom>
-  //     Dev password: Battaglia8!
-  //   </Typography>
-
-  //   {error && (
-  //     <List>
-  //       <ListItem style={{ color: 'red', fontSize: '0.9rem' }}>
-  //         {error}
-  //       </ListItem>
-  //     </List>
-  //   )}
-
-  //   <TextField
-  //     label="Email"
-  //     variant="outlined"
-  //     type="email"
-  //     value={email}
-  //     onChange={(e) => setEmail(e.target.value)}
-  //     required
-  //   />
-  //   <TextField
-  //     label="Password"
-  //     variant="outlined"
-  //     type="password"
-  //     value={password}
-  //     onChange={(e) => setPassword(e.target.value)}
-  //     required
-  //   />
-  //   <Button variant="contained" color="primary" type="submit">
-  //     Login
-  //   </Button>
-  // </Box> 
-
   <Box
   component="form"
   noValidate
