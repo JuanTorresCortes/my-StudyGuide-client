@@ -1,10 +1,23 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import {removeUserToken} from '../Auth/authLocalStorage'
-import { AppBar, Toolbar, Typography, Button, IconButton, Avatar } from '@mui/material';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // For the logout icon
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { removeUserToken } from "../Auth/authLocalStorage";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Avatar,
+} from "@mui/material";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp"; // For the logout icon
 
-const NavBar = ({ isVerified, setIsVerified, userName,setUserName, setShouldRefresh }) => {
+const NavBar = ({
+  isVerified,
+  setIsVerified,
+  userName,
+  setUserName,
+  setShouldRefresh,
+}) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -22,35 +35,42 @@ const NavBar = ({ isVerified, setIsVerified, userName,setUserName, setShouldRefr
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" sx={{ backgroundColor: "#151ad5" }}>
       <Toolbar>
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          style={{ flexGrow: 1 }}
+          sx={{ fontWeight: 700 }}
+        >
           StudyLab
         </Typography>
         {isVerified ? (
           <>
             <IconButton color="inherit">
-              <Avatar>{userName.charAt(0)}</Avatar>  {/* Displaying the first letter of userName */}
+              <Avatar>{userName.charAt(0)}</Avatar>{" "}
+              {/* Displaying the first letter of userName */}
             </IconButton>
-            <Typography variant="body1" style={{ marginRight: '1rem' }}>
+            <Typography variant="body1" style={{ marginRight: "1rem" }}>
               {userName}
             </Typography>
-            <Button 
-              color="inherit" 
-              startIcon={<ExitToAppIcon />} 
-              onClick={ handleLogout }>
+            <Button
+              color="inherit"
+              startIcon={<ExitToAppIcon />}
+              onClick={handleLogout}
+            >
               Logout
             </Button>
           </>
         ) : (
           <>
-            <Button color="inherit" onClick={() => navigate('/login')}>Login</Button>
-            <Button color="inherit" onClick={() => navigate('/admin')}>Admin</Button> 
+            <Button color="inherit" onClick={() => navigate("/login")}>
+              Login
+            </Button>
           </>
         )}
       </Toolbar>
     </AppBar>
   );
-}
+};
 
 export default NavBar;

@@ -9,15 +9,17 @@ import {
   Typography,
   Container,
   Link,
-  List,
-  ListItem,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-
 import { registerUser } from "../Api/api";
 
 const RegisterForm = () => {
@@ -30,51 +32,35 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [varPassword, setVarPassword] = useState("");
   const [errors, setErrors] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-
     let errorArray = [];
-    ////////////// refactor to array with validations then loop over array rules ///////////////////////////
-    if (!firstName.trim()) {
-      errorArray.push("First name is required");
-    }
 
-    if (!lastName.trim()) {
-      errorArray.push("Last name is required");
-    }
+    if (!firstName.trim()) errorArray.push("First name is required");
+    if (!lastName.trim()) errorArray.push("Last name is required");
+    if (!email.trim()) errorArray.push("Email is required");
+    if (!gradeLevel.trim()) errorArray.push("Grade level is required");
+    if (!password.trim()) errorArray.push("Password is required");
+    if (password !== varPassword) errorArray.push("Passwords do not match");
 
-    if (!email.trim()) {
-      errorArray.push("Email is required");
-    }
+    if (errorArray.length === 0) {
+      const userData = {
+        firstName,
+        lastName,
+        gradeLevel,
+        email,
+        password,
+      };
 
-    if (!gradeLevel.trim()) {
-      errorArray.push("GradLevel is required");
-    }
+      const response = await registerUser(userData);
 
-    if (!password.trim()) {
-      errorArray.push("Password is required");
-    }
-
-    if (password !== varPassword) {
-      errorArray.push("Passwords do not match");
-    }
-
-    const userData = {
-      firstName,
-      lastName,
-      gradeLevel,
-      email,
-      password,
-    };
-
-    const response = await registerUser(userData);
-
-    if (response.success === false) {
-      const err = response.error;
-      console.log(err);
-      for (const item in err) {
-        errorArray.push(err[item]);
+      if (response && response.success === false) {
+        const err = response.error;
+        for (const item in err) {
+          errorArray.push(err[item]);
+        }
       }
     }
 
@@ -86,6 +72,8 @@ const RegisterForm = () => {
       setEmail("");
       setPassword("");
       navigate("/login");
+    } else {
+      setOpenDialog(true);
     }
   };
 
@@ -96,8 +84,8 @@ const RegisterForm = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          padding: "0", // Use padding for a bit of spacing
-          width: "100%", // Ensure the box takes the full width
+          padding: "0",
+          width: "100%",
           height: "15em",
         }}
       >
@@ -107,16 +95,6 @@ const RegisterForm = () => {
         <Typography component="h3" variant="h5" sx={{ mb: 1 }}>
           Sign Up
         </Typography>
-
-        {errors.length > 0 && (
-          <List>
-            {errors.map((error, index) => (
-              <ListItem key={index} style={{ color: "red" }}>
-                {error}
-              </ListItem>
-            ))}
-          </List>
-        )}
 
         <Box component="form" noValidate onSubmit={handleOnSubmit}>
           <Grid container spacing={0.3}>
@@ -218,27 +196,24 @@ const RegisterForm = () => {
             </Grid>
           </Grid>
         </Box>
+
+        {/* Error Dialog */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Error</DialogTitle>
+          <DialogContent>
+            {errors.map((error, index) => (
+              <DialogContentText key={index}>{error}</DialogContentText>
+            ))}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Container>
   );
 };
 
 export default RegisterForm;
-
-//   _id: { type: String, default: uuid },
-//   firstName: { type: String, required: true },
-//   lastName: { type: String, required: true },
-//   email: {
-//     type: String,
-//     required: true,
-//     lowercase: true,
-//     trim: true,
-//     unique: true,
-//   },
-//   gradeLevel: {
-//     type: String,
-//     enum: ["5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"],
-//     required: true,
-//   },
-//   passwordHash: { type: String, required: true },
-//   testRecord: [completedTestSchema],
