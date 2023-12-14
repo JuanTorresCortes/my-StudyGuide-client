@@ -25,6 +25,32 @@ const loginUser = async (userData) => {
   }
 };
 
+// function to login admin
+// const loginAdmin = async () => {
+//   try {
+//     const response = await axios.post(`${baseUrl}/admin/login-admin`, userData);
+//     return response.data;
+//   } catch (error) {
+//     return error.response.data;
+//   }
+// };
+
+const loginAdmin = async (userData) => {
+  try {
+    const response = await axios.post(`${baseUrl}/admin/login-admin`, userData);
+    return response.data;
+  } catch (error) {
+    // Check if error.response exists before trying to access .data
+    if (error.response) {
+      return error.response.data;
+    } else {
+      // Handle cases where error.response is undefined
+      console.error("Error in loginAdmin:", error);
+      return { success: false, error: "An unexpected error occurred" };
+    }
+  }
+};
+
 // Function to validate a user's token by making a GET request to the server
 const validateUser = async (userToken) => {
   try {
@@ -45,17 +71,19 @@ const validateUser = async (userToken) => {
 
 const uploadTest = async (testData) => {
   try {
+    // Axios will automatically set the Content-Type to multipart/form-data
+    // and include the boundary parameter which is necessary for file uploads
     const response = await axios.post(`${baseUrl}/tests/upload-test`, testData);
     return response.data; // Return the data directly if successful
   } catch (error) {
     if (error.response) {
-      // The request was made and the server responded with a status code outside of the range of 2xx
+      // The request was made and the server responded with a status code that falls out of the range of 2xx
       throw new Error(error.response.data.message || "Error uploading file.");
     } else if (error.request) {
       // The request was made but no response was received
       throw new Error("No response received from server. Please try again.");
     } else {
-      // Some other error occurred during setup
+      // Something happened in setting up the request that triggered an Error
       throw error; // Re-throw the error to be caught by the calling function
     }
   }
@@ -105,12 +133,35 @@ const getCompletedTest = async (id) => {
   }
 };
 
-const loginAdmin = async () => {
+const getAllTests = async () => {
   try {
-    const response = await axios.post(`${baseUrl}/users/login-user`, userData);
+    const response = await axios.get(`${baseUrl}/admin/get-all-tests`);
+    return response.data; // Return only the data part of the response
+  } catch (error) {
+    console.error("Error retrieving tests:", error);
+    return { error: "Error retrieving tests" }; // Return an error object
+  }
+};
+
+const getAllUsers = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/admin/get-all-users`);
+    return response.data; // Return only the data part of the response
+  } catch (error) {
+    console.error("Error retrieving users:", error);
+    return { error: "Error retrieving users" }; // Return an error object
+  }
+};
+
+const deleteUser = async (userId) => {
+  try {
+    const response = await axios.delete(
+      `${baseUrl}/admin/delete-user/${userId}`
+    );
     return response.data;
   } catch (error) {
-    return error.response.data;
+    console.error("Error deleting users:", error);
+    return { error: "Error deleting users" }; // Return an error object
   }
 };
 
@@ -124,4 +175,7 @@ export {
   addCompletedTest,
   getCompletedTest,
   loginAdmin,
+  getAllTests,
+  getAllUsers,
+  deleteUser,
 };

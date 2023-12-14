@@ -1,18 +1,19 @@
 // import { pdfjs } from 'react-pdf';
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import LandingPage from './Pages/LandingPage.jsx'
-import './index.css'
-import TestPage from './Pages/TestPage.jsx';
-import LoginPage from './Pages/LoginPage.jsx';
-import DashboardPage from './Pages/DashboardPage.jsx';
-import TestArchive from './Pages/TestArchive.jsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import LandingPage from "./Pages/LandingPage.jsx";
+import "./index.css";
+import TestPage from "./Pages/TestPage.jsx";
+import LoginPage from "./Pages/LoginPage.jsx";
+import DashboardPage from "./Pages/DashboardPage.jsx";
+import TestArchive from "./Pages/TestArchive.jsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AdminLogin from './Pages/AdminLogin.jsx'
-
+import AdminLogin from "./Pages/AdminLogin.jsx";
+import AdminDashboardPage from "./Pages/AdminDashboardPage.jsx";
+import AdminTestBank from "./Pages/AdminTestBank.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,40 +22,46 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <LandingPage />
+        element: <LandingPage />,
       },
       {
-        path: '/login',
-        element: <LoginPage/>
-        
+        path: "/login",
+        element: <LoginPage />,
       },
       {
-        path: '/Dashboard',
-        element: <DashboardPage/>
+        path: "/Dashboard",
+        element: <DashboardPage />,
       },
       {
-        path: '/test',
+        path: "/test",
         element: <TestPage />,
       },
       {
-        path: '/archive',
-        element: <TestArchive />
+        path: "/archive",
+        element: <TestArchive />,
       },
-    ]
+    ],
   },
-  {
-    path: '/landingPage',
-    element: <LandingPage />
-  },
-  {
-    path: '/admin',
-    element: <AdminLogin />,
-    children: [
-     
-    ]
-  }
-])
 
+  {
+    path: "/admin-login",
+    element: <AdminLogin />,
+  },
+  {
+    path: "/admin-Dashboard",
+    element: <AdminDashboardPage />,
+  },
+
+  {
+    path: "/admin-test-bank",
+    element: <AdminTestBank />,
+  },
+
+  {
+    path: "/landingPage",
+    element: <LandingPage />,
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

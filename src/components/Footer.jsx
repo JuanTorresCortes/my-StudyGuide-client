@@ -27,7 +27,7 @@ const Footer = () => {
           {new Date().getFullYear()}
           {"."}
           <br />
-          <Button color="inherit" onClick={() => navigate("/admin")}>
+          <Button color="inherit" onClick={() => navigate("/admin-login")}>
             Admin
           </Button>
         </Typography>
