@@ -25,16 +25,6 @@ const loginUser = async (userData) => {
   }
 };
 
-// function to login admin
-// const loginAdmin = async () => {
-//   try {
-//     const response = await axios.post(`${baseUrl}/admin/login-admin`, userData);
-//     return response.data;
-//   } catch (error) {
-//     return error.response.data;
-//   }
-// };
-
 const loginAdmin = async (userData) => {
   try {
     const response = await axios.post(`${baseUrl}/admin/login-admin`, userData);
@@ -165,6 +155,18 @@ const deleteUser = async (userId) => {
   }
 };
 
+const deleteTest = async (testId) => {
+  try {
+    const response = await axios.delete(
+      `${baseUrl}/admin/delete-test/${testId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting test:", error);
+    return { error: "Error deleting test" }; // Return an error object
+  }
+};
+
 export {
   registerUser,
   loginUser,
@@ -178,4 +180,5 @@ export {
   getAllTests,
   getAllUsers,
   deleteUser,
+  deleteTest,
 };

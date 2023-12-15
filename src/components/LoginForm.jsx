@@ -1,125 +1,138 @@
-import React, { useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import {
-  TextField, Button, Typography, Box, Avatar, Link, Grid, CssBaseline,
-  FormControlLabel, Checkbox
-} from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { loginUser } from '../Api/api'
-import {setUserToken} from '../Auth/authLocalStorage'
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Avatar,
+  Link,
+  Grid,
+  CssBaseline,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { loginUser } from "../Api/api";
+import { setUserToken } from "../Auth/authLocalStorage";
 
-const LoginForm = () => {
-
+const LoginForm = ({ handleOpen }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
- 
-  const { setShouldRefresh} = useOutletContext()
+  const [errors, setErrors] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
 
-  // const { setShouldRefresh } = useOutletContext();
+  const { setShouldRefresh } = useOutletContext();
+
   const navigate = useNavigate();
 
-  // Function to handle form submission when the user clicks the submit button
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    setShouldRefresh(true);
 
-    // ⚠️ From App.js => const { setShouldRefresh } = useOutletContext(); ⚠️
-     setShouldRefresh(true);
+    let errorArray = [];
 
-    // Create a data object with the email and password to be sent to the server
-    const data = {
-      email,
-      password,
-    };
+    if (!email.trim()) errorArray.push("Email is required.");
+    if (!password.trim()) errorArray.push("Password is required.");
 
-    // Call the API function to login the user with the provided data
-    // ⚠️import { loginUser } from "../Api/api"⚠️;
-    const loginResult = await loginUser(data);
+    setErrors(errorArray);
 
-    if (loginResult.success) {
-      // If the login is successful, set the user token in local storage, reset the email and password states, and navigate to the home page
-      // ⚠️ import { setUserToken } from "../Auth/authLocalStorage"; ⚠️
-       setUserToken(loginResult.token);
-      setEmail("");
-      setPassword("");
-      setError({});
-      navigate("/Dashboard");
-    } else {
-      // If there are errors in the login response, set the error state to display the error messages
-      setError(loginResult.error);
+    if (errorArray.length > 0) {
+      setOpenDialog(true);
+      return; // Stop the execution if there are initial validation errors.
     }
 
-    setShouldRefresh(false); // Set the
-  
-  }
+    // If initial validations pass, proceed to login.
+    try {
+      const loginResult = await loginUser({ email, password });
+
+      if (loginResult && loginResult.success) {
+        setUserToken(loginResult.token);
+        setEmail("");
+        setPassword("");
+        setShouldRefresh(false);
+        navigate("/Dashboard");
+      } else {
+        // Handle the case where login is unsuccessful due to server-side validation.
+        errorArray = [
+          ...errorArray,
+          ...(loginResult.error || [
+            "Login failed. Email or password did not match. Please try again.",
+          ]),
+        ];
+        setErrors(errorArray);
+        setOpenDialog(true);
+      }
+    } catch (error) {
+      // Handle the case where an exception occurred during the login process.
+      errorArray.push(
+        "An error occurred during login. Email or password did not match. Please try again."
+      );
+      setErrors(errorArray);
+      setOpenDialog(true);
+    }
+  };
+
   return (
-  <Box
-  component="form"
-  noValidate
-  onSubmit={handleOnSubmit}
-  sx={{ mt: 1 }}
->
-  <CssBaseline />
-  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-    <LockOutlinedIcon />
-  </Avatar>
-  <Typography component="h1" variant="h5">
-    Sign in
-  </Typography>
-  {error && (
-    <Typography variant="body2" style={{ color: 'red' }}>
-      {error}
-    </Typography>
-  )}
-  <TextField
-    margin="normal"
-    required
-    fullWidth
-    id="email"
-    label="Email Address"
-    name="email"
-    autoComplete="email"
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-    autoFocus
-  />
-  <TextField
-    margin="normal"
-    required
-    fullWidth
-    name="password"
-    label="Password"
-    type="password"
-    id="password"
-    autoComplete="current-password"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-  />
-  {/* <FormControlLabel
-    control={<Checkbox value="remember" color="primary" />}
-    label="Remember me"
-  /> */}
-  <Button
-    type="submit"
-    fullWidth
-    variant="contained"
-    sx={{ mt: 3, mb: 2 }}
-  >
-    Sign In
-  </Button>
-  <Grid container>
-    {/* <Grid item xs>
-      <Link href="#" variant="body2">
-        Forgot password?
-      </Link>
-    </Grid> */}
-    <Grid item>
-      <Link href="/" variant="body2">
-        {"Don't have an account? Sign Up"}
-      </Link>
-    </Grid>
-  </Grid>
-</Box>
+    <Box component="form" noValidate onSubmit={handleOnSubmit} sx={{ mt: 1 }}>
+      <CssBaseline />
+      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Sign in
+      </Typography>
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="email"
+        label="Email Address"
+        name="email"
+        autoComplete="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        autoFocus
+      />
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        name="password"
+        label="Password"
+        type="password"
+        id="password"
+        autoComplete="current-password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+        Sign In
+      </Button>
+      <Grid container>
+        <Grid item>
+          <Button onClick={handleOpen}>Don't have an account? Sign Up</Button>
+        </Grid>
+      </Grid>
+
+      {/* Error Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>{"Error"}</DialogTitle>
+        <DialogContent>
+          {errors.map((err, index) => (
+            <DialogContentText key={index}>{err}</DialogContentText>
+          ))}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 

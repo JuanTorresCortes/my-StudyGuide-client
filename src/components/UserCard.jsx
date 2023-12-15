@@ -8,7 +8,8 @@ import {
   Button,
 } from "@mui/material";
 
-function UserCard({ name, email, testScore, imageUrl, onDelete }) {
+function UserCard({ name, email, testRecord, imageUrl, onDelete }) {
+  console.log(testRecord);
   return (
     <Card
       sx={{
@@ -54,7 +55,7 @@ function UserCard({ name, email, testScore, imageUrl, onDelete }) {
           color="text.secondary"
           sx={{ textAlign: "center" }}
         >
-          Test Score: {testScore !== undefined ? testScore : "N/A"}
+          Test Record: {testRecord !== undefined ? testRecord : "N/A"}
         </Typography>
       </CardContent>
       <Button

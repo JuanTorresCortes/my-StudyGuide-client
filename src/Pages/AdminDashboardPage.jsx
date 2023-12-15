@@ -25,7 +25,7 @@ const AdminDashboardPage = () => {
     const fetchUsers = async () => {
       const response = await getAllUsers();
       if (response && !response.error) {
-        setAllUsers(response.data); // Assuming response.data contains the array of users
+        setAllUsers(response.data);
       } else {
         // Handle error case
         console.error("Failed to fetch users");
@@ -40,10 +40,17 @@ const AdminDashboardPage = () => {
     setOpenDialog(true);
   };
 
-  const handleConfirmDelete = () => {
-    deleteUser(selectedUserId);
-    console.log(`Confirmed deletion for user ID: ${selectedUserId}`);
-    // Perform the deletion of User
+  const handleConfirmDelete = async () => {
+    const response = await deleteUser(selectedUserId);
+    if (response && !response.error) {
+      setAllUsers((currentUsers) =>
+        currentUsers.filter((user) => user._id !== selectedUserId)
+      );
+      console.log(`Confirmed deletion for user ID: ${selectedUserId}`);
+    } else {
+      // Handle error case
+      console.error("Failed to delete users");
+    }
     setOpenDialog(false);
   };
 
@@ -61,9 +68,9 @@ const AdminDashboardPage = () => {
             <UserCard
               name={`${user.firstName}  ${user.lastName}`}
               email={user.email}
-              testScore={user.testScore}
+              testRecord={user.testRecord}
               imageUrl={user.imageUrl}
-              onDelete={() => handleDeleteUser(user.id)}
+              onDelete={() => handleDeleteUser(user._id)}
             />
           </Grid>
         ))}

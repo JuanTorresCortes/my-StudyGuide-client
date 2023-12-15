@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import {
   TextField,
   Button,
   Typography,
   Box,
-  Avatar,
-  Link,
-  Grid,
   CssBaseline,
-  FormControlLabel,
-  Checkbox,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
-
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import { setUserToken } from "../Auth/authLocalStorage";
 import { loginAdmin } from "../Api/api";
@@ -23,35 +20,40 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [key, setKey] = useState("");
-
-  const [error, setError] = useState();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [errors, setErrors] = useState([]);
 
   const navigate = useNavigate();
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    let errorArray = [];
 
-    // Create a data object with the email and password to be sent to the server
-    const data = {
-      email,
-      password,
-      key,
-    };
+    if (!email.trim()) errorArray.push("Email is required");
+    if (!password.trim()) errorArray.push("Password is required");
+    if (!key.trim()) errorArray.push("Key is required");
 
+    if (errorArray.length > 0) {
+      setErrors(errorArray);
+      setOpenDialog(true);
+      return;
+    }
+
+    const data = { email, password, key };
     const loginResult = await loginAdmin(data);
 
-    if (loginResult.success) {
-      // If the login is successful, set the user token in local storage, reset the email and password states, and navigate to the home page
-      // ⚠️ import { setUserToken } from "../Auth/authLocalStorage"; ⚠️
+    if (loginResult && loginResult.success) {
       setUserToken(loginResult.token);
       setEmail("");
       setPassword("");
       setKey("");
-      setError({});
+      setErrors([]);
       navigate("/admin-Dashboard");
     } else {
-      // If there are errors in the login response, set the error state to display the error messages
-      setError(loginResult.error);
+      setErrors(
+        loginResult.error ? Object.values(loginResult.error) : ["Unknown error"]
+      );
+      setOpenDialog(true);
     }
   };
 
@@ -62,11 +64,7 @@ const AdminLogin = () => {
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
-      {error && (
-        <Typography variant="body2" style={{ color: "red" }}>
-          {error.data}
-        </Typography>
-      )}
+
       <TextField
         margin="normal"
         required
@@ -95,7 +93,7 @@ const AdminLogin = () => {
         required
         fullWidth
         name="key"
-        label="key"
+        label="Key"
         type="password"
         id="key"
         value={key}
@@ -104,111 +102,23 @@ const AdminLogin = () => {
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         Sign In
       </Button>
+
+      {/* Error Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Error</DialogTitle>
+        <DialogContent>
+          {errors.map((error, index) => (
+            <DialogContentText key={index}>{error}</DialogContentText>
+          ))}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
 
 export default AdminLogin;
-
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import {
-//   TextField,
-//   Button,
-//   Typography,
-//   Box,
-//   CircularProgress,
-//   CssBaseline,
-// } from "@mui/material";
-// import { setUserToken } from "../Auth/authLocalStorage";
-// import { loginAdmin } from "../Api/api";
-
-// const AdminLogin = () => {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [key, setKey] = useState("");
-//   const [error, setError] = useState();
-//   const [loading, setLoading] = useState(false);
-
-//   const navigate = useNavigate();
-
-//   const handleOnSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-
-//     const data = { email, password, key };
-//     const loginResult = await loginAdmin(data);
-
-//     if (loginResult.success) {
-//       setUserToken(loginResult.token);
-//       setEmail("");
-//       setPassword("");
-//       setKey("");
-//       setError({});
-//       navigate("/admin-Dashboard");
-//     } else {
-//       setError(loginResult.error);
-//     }
-
-//     setLoading(false);
-//   };
-
-//   return (
-//     <Box component="form" noValidate onSubmit={handleOnSubmit} sx={{ mt: 1 }}>
-//       <CssBaseline />
-//       {/* ...form elements, including TextField for email, password, and key */}
-
-//       <TextField
-//         margin="normal"
-//         required
-//         fullWidth
-//         id="email"
-//         label="Email Address"
-//         name="email"
-//         autoComplete="email"
-//         value={email}
-//         onChange={(e) => setEmail(e.target.value)}
-//         autoFocus
-//       />
-//       <TextField
-//         margin="normal"
-//         required
-//         fullWidth
-//         name="password"
-//         label="Password"
-//         type="password"
-//         id="password"
-//         value={password}
-//         onChange={(e) => setPassword(e.target.value)}
-//       />
-//       <TextField
-//         margin="normal"
-//         required
-//         fullWidth
-//         name="key"
-//         label="key"
-//         type="password"
-//         id="key"
-//         value={key}
-//         onChange={(e) => setKey(e.target.value)}
-//       />
-
-//       <Button
-//         type="submit"
-//         fullWidth
-//         variant="contained"
-//         sx={{ mt: 3, mb: 2 }}
-//         disabled={loading}
-//       >
-//         {loading ? <CircularProgress size={24} /> : "Sign In"}
-//       </Button>
-//       {error && (
-//         <Typography variant="body2" style={{ color: "red" }}>
-//           {error}
-//         </Typography>
-//       )}
-//     </Box>
-//   );
-// };
-
-// export default AdminLogin;

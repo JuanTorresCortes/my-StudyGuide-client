@@ -19,13 +19,6 @@ function App() {
   const [isVerified, setIsVerified] = useState(false);
   const [test, setTest] = useState({});
 
-  // useEffect(()=>{
-  //   const testing = () =>{
-  //     console.log(test)
-  //   }
-  //   testing()
-  // }, [test])
-
   const navigate = useNavigate();
 
   // Effect hook to check and set the user token from local storage on component mount

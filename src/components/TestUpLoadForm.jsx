@@ -12,7 +12,7 @@ import {
   FormControl,
 } from "@mui/material";
 
-const TestUpLoadForm = () => {
+const TestUpLoadForm = ({ setModalOpen }) => {
   const [testTopic, setTestTopic] = useState("");
   const [grade, setGrade] = useState("");
   const [testKey, setTestKey] = useState("");
@@ -36,6 +36,7 @@ const TestUpLoadForm = () => {
         setGrade("");
         setTestKey("");
         setPdf(null);
+        setModalOpen(false);
         navigate("/admin-test-bank");
       }
     } catch (error) {
@@ -54,7 +55,7 @@ const TestUpLoadForm = () => {
       noValidate
       autoComplete="off"
       onSubmit={handleSubmit}
-      sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
+      sx={{ "& .MuiTextField-root": { m: 1 } }} // width: "25ch"
     >
       <Typography variant="h6" gutterBottom>
         Upload Test Form
@@ -76,20 +77,33 @@ const TestUpLoadForm = () => {
         </Select>
       </FormControl>
 
-      <TextField
-        required
-        label="Grade"
-        value={grade}
-        onChange={(e) => setGrade(e.target.value)}
-      />
+      <FormControl fullWidth margin="normal">
+        <InputLabel id="test-topic-label">Test Grade</InputLabel>
+        <Select
+          value={grade}
+          label="Test grade"
+          onChange={(e) => setGrade(e.target.value)}
+          required
+        >
+          <MenuItem value="1">1st</MenuItem>
+          <MenuItem value="2">2nd</MenuItem>
+          <MenuItem value="3">3rd</MenuItem>
+          <MenuItem value="4">4th</MenuItem>
+          <MenuItem value="5">5th</MenuItem>
+          <MenuItem value="6">6th</MenuItem>
+          <MenuItem value="7">7th</MenuItem>
+          <MenuItem value="8">8th</MenuItem>
+        </Select>
+      </FormControl>
 
       <TextField
         required
+        fullWidth
         label="Test Key"
         value={testKey}
         onChange={(e) => setTestKey(e.target.value)}
       />
-
+      <br />
       <Button variant="contained" component="label">
         Upload PDF
         <input
@@ -100,7 +114,7 @@ const TestUpLoadForm = () => {
           name="pdfData"
         />
       </Button>
-
+      <br />
       <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
         Submit
       </Button>
