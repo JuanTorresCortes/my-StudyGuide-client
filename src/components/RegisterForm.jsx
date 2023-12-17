@@ -21,8 +21,9 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { registerUser } from "../Api/api";
+import LandingPage from "../Pages/LandingPage";
 
-const RegisterForm = () => {
+const RegisterForm = ({ handleClose }) => {
   const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
@@ -31,6 +32,7 @@ const RegisterForm = () => {
   const [gradeLevel, setGradeLevel] = useState("");
   const [password, setPassword] = useState("");
   const [varPassword, setVarPassword] = useState("");
+
   const [errors, setErrors] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -69,9 +71,12 @@ const RegisterForm = () => {
     if (errorArray.length === 0) {
       setFirstName("");
       setLastName("");
+      setGradeLevel("");
       setEmail("");
       setPassword("");
+      setVarPassword("");
       navigate("/login");
+      handleClose();
     } else {
       setOpenDialog(true);
     }

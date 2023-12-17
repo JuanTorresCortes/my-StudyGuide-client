@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { uploadTest } from "../Api/api";
-import { useNavigate } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -10,18 +9,29 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  CircularProgress,
 } from "@mui/material";
 
-const TestUpLoadForm = ({ setModalOpen }) => {
+const TestUpLoadForm = ({ setModalOpen, refetchTests }) => {
   const [testTopic, setTestTopic] = useState("");
   const [grade, setGrade] = useState("");
   const [testKey, setTestKey] = useState("");
   const [pdf, setPdf] = useState(null);
+  const [pdfSelected, setPdfSelected] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const navigate = useNavigate();
+  const handlePdfChange = (event) => {
+    if (event.target.files[0]) {
+      setPdfSelected(true);
+      setPdf(event.target.files[0]);
+    } else {
+      setPdfSelected(false);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
 
     const formData = new FormData();
     formData.append("testTopic", testTopic);
@@ -32,21 +42,18 @@ const TestUpLoadForm = ({ setModalOpen }) => {
     try {
       const result = await uploadTest(formData);
       if (result.success === true) {
+        await refetchTests();
+        // remount();
         setTestTopic("");
         setGrade("");
         setTestKey("");
         setPdf(null);
         setModalOpen(false);
-        navigate("/admin-test-bank");
       }
     } catch (error) {
       console.error("Error uploading test:", error);
       // Handle error (show error message to the user)
     }
-  };
-
-  const handlePdfChange = (event) => {
-    setPdf(event.target.files[0]);
   };
 
   return (
@@ -104,7 +111,11 @@ const TestUpLoadForm = ({ setModalOpen }) => {
         onChange={(e) => setTestKey(e.target.value)}
       />
       <br />
-      <Button variant="contained" component="label">
+      <Button
+        variant="contained"
+        component="label"
+        sx={{ backgroundColor: pdfSelected ? "#4caf50" : null }}
+      >
         Upload PDF
         <input
           type="file"
@@ -115,8 +126,14 @@ const TestUpLoadForm = ({ setModalOpen }) => {
         />
       </Button>
       <br />
-      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-        Submit
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        sx={{ mt: 2 }}
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? <CircularProgress size={24} /> : "Submit"}
       </Button>
     </Box>
   );

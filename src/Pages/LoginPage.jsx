@@ -63,7 +63,7 @@ const LoginPage = () => {
               outline: "none", // Removes the default focus outline
             }}
           >
-            <RegisterForm />
+            <RegisterForm handleClose={handleClose} />
           </Box>
         </Fade>
       </Modal>

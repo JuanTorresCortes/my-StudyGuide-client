@@ -54,9 +54,43 @@ const NavBar = ({
               {userName}
             </Typography>
             <Button
+              onClick={() => navigate("/archive")}
+              sx={{
+                backgroundColor: "#151ad5", // Dark blue background
+                color: "white", // White text
+                borderRadius: 0, // Square edges
+                "&:hover": {
+                  backgroundColor: "#c00000", // Slightly darker blue on hover
+                },
+              }}
+            >
+              Test Archive
+            </Button>
+            <Button
+              onClick={() => navigate("/Dashboard")}
+              sx={{
+                backgroundColor: "#151ad5", // Dark blue background
+                color: "white", // White text
+                borderRadius: 0, // Square edges
+                "&:hover": {
+                  backgroundColor: "#c00000", // Slightly darker blue on hover
+                },
+              }}
+            >
+              Back to Dashboard
+            </Button>
+            <Button
               color="inherit"
               startIcon={<ExitToAppIcon />}
               onClick={handleLogout}
+              sx={{
+                backgroundColor: "#151ad5", // Dark blue background
+                color: "white", // White text
+                borderRadius: 0, // Square edges
+                "&:hover": {
+                  backgroundColor: "#c00000", // Slightly darker blue on hover
+                },
+              }}
             >
               Logout
             </Button>

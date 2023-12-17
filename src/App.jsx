@@ -13,7 +13,7 @@ import { CssBaseline, Container, Box } from "@mui/material";
 
 function App() {
   const [userToken, setUserToken] = useState("");
-  const [shouldRefresh, setShouldRefresh] = useState("");
+  const [shouldRefresh, setShouldRefresh] = useState(false);
   const [userName, setUserName] = useState(null);
   const [userInfo, setUserInfo] = useState({});
   const [isVerified, setIsVerified] = useState(false);

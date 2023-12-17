@@ -8,22 +8,23 @@ import {
   Button,
 } from "@mui/material";
 
-function UserCard({ name, email, testRecord, imageUrl, onDelete }) {
-  console.log(testRecord);
+function UserCard({ name, email, onTestView, imageUrl, onDelete }) {
   return (
     <Card
-      sx={{
-        width: 300,
-        height: 300,
-        boxShadow: 3,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
+      sx={
+        {
+          // width: 300,
+          // height: 300,
+          // boxShadow: 3,
+          // display: "flex",
+          // flexDirection: "column",
+          // justifyContent: "space-between",
+        }
+      }
     >
       <CardMedia
         component="img"
-        sx={{ width: "100%", height: "40%", objectFit: "cover" }}
+        sx={{ maxHeight: 200, objectFit: "cover" }}
         image={imageUrl || "/profile.png"}
         alt="User Image"
       />
@@ -50,14 +51,16 @@ function UserCard({ name, email, testRecord, imageUrl, onDelete }) {
         >
           Email: {email || "Email Not Available"}
         </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: "center" }}
-        >
-          Test Record: {testRecord !== undefined ? testRecord : "N/A"}
-        </Typography>
       </CardContent>
+
+      <Button
+        variant="contained"
+        color="info"
+        onClick={() => onTestView()}
+        sx={{ marginBottom: 2 }}
+      >
+        Test Record
+      </Button>
       <Button
         variant="contained"
         color="error"
@@ -71,3 +74,4 @@ function UserCard({ name, email, testRecord, imageUrl, onDelete }) {
 }
 
 export default UserCard;
+// width: "100%", height: "40%",

@@ -7,21 +7,14 @@ import { useNavigate } from "react-router-dom";
 
 import TestUpLoadForm from "./TestUpLoadForm";
 
-const AdminNav = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const handleModalToggle = () => {
-    setModalOpen(!isModalOpen);
-  };
+const AdminNav = ({ setAllTests, allTests }) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    //setShouldRefresh(true);
-
     // Remove the user token from the local storage
     const resultLogout = await removeUserToken();
     if (resultLogout) {
       // Set the user authentication status to false and reset user details
-      //setShouldRefresh(false);
       //setUserName(null);
       //setIsVerified(false);
       navigate("/");
@@ -36,15 +29,33 @@ const AdminNav = () => {
             StudyLab
           </Typography>
 
-          <Button color="inherit" onClick={handleModalToggle}>
-            Upload Test
-          </Button>
-
-          <Button color="inherit" onClick={() => navigate("/admin-Dashboard")}>
+          <Button
+            color="inherit"
+            onClick={() => navigate("/admin-Dashboard")}
+            sx={{
+              backgroundColor: "#151ad5", // Dark blue background
+              color: "white", // White text
+              borderRadius: 0, // Square edges
+              "&:hover": {
+                backgroundColor: "#c00000", // Slightly darker blue on hover
+              },
+            }}
+          >
             Users
           </Button>
 
-          <Button color="inherit" onClick={() => navigate("/admin-test-bank")}>
+          <Button
+            color="inherit"
+            onClick={() => navigate("/admin-test-bank")}
+            sx={{
+              backgroundColor: "#151ad5", // Dark blue background
+              color: "white", // White text
+              borderRadius: 0, // Square edges
+              "&:hover": {
+                backgroundColor: "#c00000", // Slightly darker blue on hover
+              },
+            }}
+          >
             Tests
           </Button>
 
@@ -52,34 +63,19 @@ const AdminNav = () => {
             color="inherit"
             startIcon={<ExitToAppIcon />}
             onClick={handleLogout}
+            sx={{
+              backgroundColor: "#151ad5", // Dark blue background
+              color: "white", // White text
+              borderRadius: 0, // Square edges
+              "&:hover": {
+                backgroundColor: "#c00000", // Slightly darker blue on hover
+              },
+            }}
           >
             Logout
           </Button>
         </Toolbar>
       </AppBar>
-
-      <Modal
-        open={isModalOpen}
-        onClose={handleModalToggle}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 800,
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 14,
-            outline: "none", // Removes the default focus outline
-          }}
-        >
-          <TestUpLoadForm setModalOpen={setModalOpen} />
-        </Box>
-      </Modal>
     </>
   );
 };

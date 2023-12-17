@@ -44,6 +44,11 @@ const router = createBrowserRouter([
   },
 
   {
+    path: "/landingPage",
+    element: <LandingPage />,
+  },
+
+  {
     path: "/admin-login",
     element: <AdminLogin />,
   },
@@ -51,15 +56,9 @@ const router = createBrowserRouter([
     path: "/admin-Dashboard",
     element: <AdminDashboardPage />,
   },
-
   {
     path: "/admin-test-bank",
     element: <AdminTestBank />,
-  },
-
-  {
-    path: "/landingPage",
-    element: <LandingPage />,
   },
 ]);
 
