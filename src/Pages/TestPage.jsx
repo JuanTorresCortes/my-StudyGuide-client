@@ -1,35 +1,36 @@
-import React,{useState, useEffect} from 'react';
-import { useOutletContext } from 'react-router-dom';
-import ScanTron from '../components/ScanTron';
-import PDFViewerTest from '../components/PDFViewerTest';
-import { Grid, Container } from '@mui/material';
-import {getTestKey} from '../Api/api'
+import React, { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
+import ScanTron from "../components/ScanTron";
+import PDFViewerTest from "../components/PDFViewerTest";
+import { Grid, Container } from "@mui/material";
+import { getTestKey } from "../Api/api";
 
 const TestPage = () => {
-  const [testKey, setTestKey] = useState(null)
+  const [key, setKey] = useState(null);
   const { userInfo, test } = useOutletContext();
 
   // Since `test` is an array, access the first element to get the desired object.
   const currentTest = test[0];
-  const { pdfData, testKeyID, testTopic } = currentTest;
+  const { pdfData, testTopic, testKey } = currentTest;
 
-  const {_id} = userInfo
+  const { _id } = userInfo;
   //console.log("user id",_id);
 
-  useEffect(()=>{
+  useEffect(() => {
     const getKey = async () => {
-      const myKey = await getTestKey(testKeyID)
-      if(myKey.success === true){
-        setTestKey(myKey)
-        //console.log(key)
-      }
-    }
-    getKey()
-  },[test])
+      // const myKey = await getTestKey(testKeyID)
+      // if(myKey.success === true){
+      //   setTestKey(myKey)
+      //   //console.log(key)
+      // }
+      setKey(testKey);
+    };
+    getKey();
+  }, [test]);
 
   return (
-    <div className='test-setup'>
-      <Container style={{ marginTop: '80px' }}>
+    <div className="test-setup">
+      <Container style={{ marginTop: "80px" }}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <PDFViewerTest pdfData={pdfData.data} />
@@ -37,9 +38,9 @@ const TestPage = () => {
         </Grid>
       </Container>
 
-      <Container style={{ marginTop: '80px' }}>
+      <Container style={{ marginTop: "80px" }}>
         <Grid item xs={12} md={6}>
-          <ScanTron testKey={testKey} testTopic={testTopic} _id={_id}/>
+          <ScanTron testKey={key} testTopic={testTopic} _id={_id} />
         </Grid>
       </Container>
     </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTestBySub } from "../Api/api";
+import { getTestByGradeAndSubject } from "../Api/api";
 import {
   Button,
   Card,
@@ -23,7 +23,7 @@ const TestSelect = ({ grade, setTest }) => {
   useEffect(() => {
     const getTest = async () => {
       try {
-        const response = await getTestBySub(testSub);
+        const response = await getTestByGradeAndSubject(grade, testSub);
         if (response.success === true) {
           setTest(response.data);
           navigate("/test");
@@ -35,7 +35,7 @@ const TestSelect = ({ grade, setTest }) => {
     getTest();
   }, [testSub]);
 
-  const handleTestScores = async (subject) => {};
+  // const handleTestScores = async (subject) => {};
 
   return (
     <Grid container spacing={4}>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { uploadTest } from "../Api/api";
+import { editTest } from "../Api/api";
 import {
   Box,
   TextField,
@@ -12,47 +12,35 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-const TestUpLoadForm = ({ setModalOpen, refetchTests }) => {
-  const [testTopic, setTestTopic] = useState("");
-  const [grade, setGrade] = useState("");
-  const [testKey, setTestKey] = useState("");
-  const [pdf, setPdf] = useState(null);
-  const [pdfSelected, setPdfSelected] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const TestEditForm = ({ handleClose, refetchTests, testData }) => {
+  const { _id: testId } = testData;
 
-  const handlePdfChange = (event) => {
-    if (event.target.files[0]) {
-      setPdfSelected(true);
-      setPdf(event.target.files[0]);
-    } else {
-      setPdfSelected(false);
-    }
-  };
+  const [editTestTopic, setTestTopic] = useState(testData.testTopic);
+  const [editGrade, setGrade] = useState(testData.grade);
+  const [editTestKey, setTestKey] = useState(testData.testKey);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
 
-    const formData = new FormData();
-    formData.append("testTopic", testTopic);
-    formData.append("grade", grade);
-    formData.append("testKey", testKey);
-    formData.append("pdf", pdf);
-    console.log(formData);
+    const formData = {
+      testTopic: editTestTopic,
+      grade: editGrade,
+      testKey: editTestKey,
+    };
+
     try {
-      const result = await uploadTest(formData);
+      const result = await editTest(testId, formData);
       if (result.success === true) {
         await refetchTests();
-        // remount();
-        setTestTopic("");
-        setGrade("");
-        setTestKey("");
-        setPdf(null);
-        setModalOpen(false);
+        handleClose();
       }
     } catch (error) {
       console.error("Error uploading test:", error);
       // Handle error (show error message to the user)
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -65,15 +53,15 @@ const TestUpLoadForm = ({ setModalOpen, refetchTests }) => {
       sx={{ "& .MuiTextField-root": { m: 1 } }} // width: "25ch"
     >
       <Typography variant="h6" gutterBottom>
-        Upload Test Form
+        Edit Test Form Test id: {testId}
       </Typography>
 
       <FormControl fullWidth margin="normal">
         <InputLabel id="test-topic-label">Test Topic</InputLabel>
         <Select
           labelId="test-topic-label"
-          id="testTopic"
-          value={testTopic}
+          id="editTestTopic"
+          value={editTestTopic}
           label="Test Topic"
           onChange={(e) => setTestTopic(e.target.value)}
           required
@@ -88,7 +76,7 @@ const TestUpLoadForm = ({ setModalOpen, refetchTests }) => {
       <FormControl fullWidth margin="normal">
         <InputLabel id="test-topic-label">Test Grade</InputLabel>
         <Select
-          value={grade}
+          value={editGrade}
           label="Test grade"
           onChange={(e) => setGrade(e.target.value)}
           required
@@ -108,24 +96,10 @@ const TestUpLoadForm = ({ setModalOpen, refetchTests }) => {
         required
         fullWidth
         label="Test Key"
-        value={testKey}
+        value={editTestKey}
         onChange={(e) => setTestKey(e.target.value)}
       />
-      <br />
-      <Button
-        variant="contained"
-        component="label"
-        sx={{ backgroundColor: pdfSelected ? "#4caf50" : null }}
-      >
-        Upload PDF
-        <input
-          type="file"
-          hidden
-          accept="application/pdf"
-          onChange={handlePdfChange}
-          name="pdfData"
-        />
-      </Button>
+
       <br />
       <Button
         type="submit"
@@ -140,4 +114,4 @@ const TestUpLoadForm = ({ setModalOpen, refetchTests }) => {
   );
 };
 
-export default TestUpLoadForm;
+export default TestEditForm;

@@ -1,13 +1,24 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, Button, Modal, Box } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Modal,
+  Box,
+  Fade,
+} from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp"; // For the logout icon
 import { removeUserToken } from "../Auth/authLocalStorage";
 
 import { useNavigate } from "react-router-dom";
+import AdminRegisterForm from "./AdminRegisterForm";
 
-import TestUpLoadForm from "./TestUpLoadForm";
+const AdminNav = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-const AdminNav = ({ setAllTests, allTests }) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -25,6 +36,20 @@ const AdminNav = ({ setAllTests, allTests }) => {
     <>
       <AppBar position="fixed" sx={{ backgroundColor: "#151ad5" }}>
         <Toolbar>
+          <Button
+            color="inherit"
+            onClick={handleOpen}
+            sx={{
+              backgroundColor: "#151ad5", // Dark blue background
+              color: "white", // White text
+              borderRadius: 0, // Square edges
+              "&:hover": {
+                backgroundColor: "#c00000", // Slightly darker blue on hover
+              },
+            }}
+          >
+            Register Admin
+          </Button>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             StudyLab
           </Typography>
@@ -76,6 +101,33 @@ const AdminNav = ({ setAllTests, allTests }) => {
           </Button>
         </Toolbar>
       </AppBar>
+
+      {/* Register Form Modal */}
+      <Modal
+        aria-labelledby="registration-form-modal"
+        aria-describedby="modal-to-register-new-users"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+      >
+        <Fade in={open}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 800,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 14,
+              outline: "none", // Removes the default focus outline
+            }}
+          >
+            <AdminRegisterForm setOpen={setOpen} />
+          </Box>
+        </Fade>
+      </Modal>
     </>
   );
 };

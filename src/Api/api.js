@@ -167,6 +167,52 @@ const deleteTest = async (testId) => {
   }
 };
 
+const registerAdmin = async (adminData) => {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/admin/register-admin`,
+      adminData
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+const editTest = async (testId, testData) => {
+  try {
+    const response = await axios.put(
+      `${baseUrl}/admin/edit-test/${testId}`,
+      testData
+    );
+    return response.data;
+  } catch (error) {
+    // Check if error.response exists before trying to access .data
+    if (error.response) {
+      return error.response.data;
+    } else {
+      // Handle cases where error.response is undefined
+      console.error("Error in editTest:", error);
+      return { success: false, error: "An unexpected error occurred" };
+    }
+  }
+};
+
+const getTestByGradeAndSubject = async (grade, subject) => {
+  try {
+    const response = await axios.get(`${baseUrl}/admin/getTestByGradSub/`, {
+      params: {
+        grade: grade,
+        subject: subject,
+      },
+    });
+    return response.data; // Return only the data part of the response
+  } catch (error) {
+    console.error("Error retrieving tests:", error);
+    return { error: "Error retrieving tests" }; // Return an error object
+  }
+};
+
 export {
   registerUser,
   loginUser,
@@ -181,4 +227,7 @@ export {
   getAllUsers,
   deleteUser,
   deleteTest,
+  registerAdmin,
+  editTest,
+  getTestByGradeAndSubject,
 };

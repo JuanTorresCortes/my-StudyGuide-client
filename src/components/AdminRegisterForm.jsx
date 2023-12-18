@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -19,19 +18,15 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { registerUser } from "../Api/api";
-import LandingPage from "../Pages/LandingPage";
+import { registerAdmin } from "../Api/api";
 
-const RegisterForm = ({ handleClose }) => {
-  const navigate = useNavigate();
-
+const AdminRegisterForm = ({ setOpen }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [gradeLevel, setGradeLevel] = useState("");
   const [password, setPassword] = useState("");
   const [varPassword, setVarPassword] = useState("");
+  const [key, setKey] = useState("");
 
   const [errors, setErrors] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -43,20 +38,20 @@ const RegisterForm = ({ handleClose }) => {
     if (!firstName.trim()) errorArray.push("First name is required");
     if (!lastName.trim()) errorArray.push("Last name is required");
     if (!email.trim()) errorArray.push("Email is required");
-    if (!gradeLevel.trim()) errorArray.push("Grade level is required");
     if (!password.trim()) errorArray.push("Password is required");
     if (password !== varPassword) errorArray.push("Passwords do not match");
+    if (!key.trim()) errorArray.push("Key is required");
 
     if (errorArray.length === 0) {
-      const userData = {
+      const adminData = {
         firstName,
         lastName,
-        gradeLevel,
         email,
         password,
+        key,
       };
 
-      const response = await registerUser(userData);
+      const response = await registerAdmin(adminData);
 
       if (response && response.success === false) {
         const err = response.error;
@@ -71,13 +66,18 @@ const RegisterForm = ({ handleClose }) => {
     if (errorArray.length === 0) {
       setFirstName("");
       setLastName("");
-      setGradeLevel("");
       setEmail("");
       setPassword("");
       setVarPassword("");
-      navigate("/login");
-      handleClose();
+      setKey("");
+      setOpen(false);
     } else {
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setVarPassword("");
+      setKey("");
       setOpenDialog(true);
     }
   };
@@ -91,14 +91,11 @@ const RegisterForm = ({ handleClose }) => {
           alignItems: "center",
           padding: "0",
           width: "100%",
-          height: "15em",
+          height: "17em",
         }}
       >
-        <Avatar sx={{ bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h3" variant="h5" sx={{ mb: 1 }}>
-          Sign Up
+          Sign Up new admin
         </Typography>
 
         <Box component="form" noValidate onSubmit={handleOnSubmit}>
@@ -106,7 +103,7 @@ const RegisterForm = ({ handleClose }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                margin="small"
+                margin="dense"
                 size="small"
                 label="First name"
                 value={firstName}
@@ -117,7 +114,7 @@ const RegisterForm = ({ handleClose }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                margin="small"
+                margin="dense"
                 size="small"
                 label="Last name"
                 value={lastName}
@@ -128,7 +125,7 @@ const RegisterForm = ({ handleClose }) => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                margin="small"
+                margin="dense"
                 size="small"
                 label="Email address"
                 value={email}
@@ -136,31 +133,11 @@ const RegisterForm = ({ handleClose }) => {
                 required
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControl fullWidth margin="small" size="small">
-                <InputLabel>Select Grade Level</InputLabel>
-                <Select
-                  value={gradeLevel}
-                  onChange={(e) => setGradeLevel(e.target.value)}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="5">5th grade</MenuItem>
-                  <MenuItem value="6">6th grade</MenuItem>
-                  <MenuItem value="7">7th grade</MenuItem>
-                  <MenuItem value="8">8th grade</MenuItem>
-                  <MenuItem value="9">9th grade</MenuItem>
-                  <MenuItem value="10">10th grade</MenuItem>
-                  <MenuItem value="11">11th grade</MenuItem>
-                  <MenuItem value="12">12th grade</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                margin="small"
+                margin="dense"
                 size="small"
                 type="password"
                 label="Create password"
@@ -169,15 +146,29 @@ const RegisterForm = ({ handleClose }) => {
                 required
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                margin="small"
+                margin="dense"
                 size="small"
                 type="password"
                 label="Verify password"
                 value={varPassword}
                 onChange={(e) => setVarPassword(e.target.value)}
+                required
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                margin="dense"
+                size="small"
+                type="password"
+                label="key"
+                value={key}
+                onChange={(e) => setKey(e.target.value)}
                 required
               />
             </Grid>
@@ -188,18 +179,11 @@ const RegisterForm = ({ handleClose }) => {
             fullWidth
             variant="contained"
             color="primary"
-            margin="small"
+            margin="dense"
             size="small"
           >
             Register
           </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
 
         {/* Error Dialog */}
@@ -221,4 +205,4 @@ const RegisterForm = ({ handleClose }) => {
   );
 };
 
-export default RegisterForm;
+export default AdminRegisterForm;

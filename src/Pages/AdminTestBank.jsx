@@ -16,15 +16,22 @@ import AdminNav from "../components/AdminNav";
 import { getAllTests, deleteTest } from "../Api/api";
 import TestCard from "../components/TestCard";
 import TestUpLoadForm from "../components/TestUpLoadForm";
+import TestEditForm from "../components/TestEditForm";
 
 const AdminTestBank = () => {
   const [allTests, setAllTests] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedTestId, setSelectedTestId] = useState(null);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [editTestData, setEditTestData] = useState([]);
 
   const handleModalToggle = () => {
     setModalOpen(!isModalOpen);
+  };
+
+  const handleEditModalToggle = () => {
+    setEditModalOpen(!isEditModalOpen);
   };
 
   useEffect(() => {
@@ -42,14 +49,24 @@ const AdminTestBank = () => {
     fetchTests();
   }, []);
 
-  const handleDeleteTest = (userId) => {
-    setSelectedTestId(userId);
+  const handleDeleteTest = (testId) => {
+    setSelectedTestId(testId);
     setOpenDialog(true);
   };
 
-  const handleEditKey = (userId) => {
-    setSelectedTestId(userId);
-    setOpenDialog(true);
+  // const handleEditTest = (testId) => {
+  //   setSelectedTestId(testId);
+  //   setEditModalOpen(true);
+  // };
+
+  const handleEditTest = (testId) => {
+    setSelectedTestId(testId);
+    const selectedTest = allTests.find((test) => test._id === testId);
+    if (selectedTest) {
+      // Assuming setEditTestData is a state setter for storing the selected test data
+      setEditTestData(selectedTest);
+      setEditModalOpen(true);
+    }
   };
 
   const handleConfirmDelete = async () => {
@@ -108,7 +125,7 @@ const AdminTestBank = () => {
               topic={`${test.testTopic}`}
               grade={`${test.grade}`}
               createdAt={`${test.createdAt}`}
-              onEditKey={() => handleEditKey(test._id)}
+              onEditTest={() => handleEditTest(test._id)}
               onDelete={() => handleDeleteTest(test._id)}
             />
           </Grid>
@@ -155,6 +172,39 @@ const AdminTestBank = () => {
         >
           <TestUpLoadForm
             setModalOpen={setModalOpen}
+            refetchTests={refetchTests}
+          />
+        </Box>
+      </Modal>
+
+      <Modal
+        open={isEditModalOpen}
+        onClose={handleEditModalToggle}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 800,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 14,
+            outline: "none", // Removes the default focus outline
+          }}
+        >
+          {/* <TestEditForm
+            setModalOpen={setEditModalOpen}
+            refetchTests={refetchTests}
+            testId={selectedTestId}
+          /> */}
+          <TestEditForm
+            isOpen={isEditModalOpen}
+            handleClose={() => setEditModalOpen(false)}
+            testData={editTestData}
             refetchTests={refetchTests}
           />
         </Box>
