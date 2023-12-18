@@ -5,7 +5,6 @@ import TestSelect from "../components/TestSelect";
 
 const DashboardPage = () => {
   const [grade, setGrade] = useState("");
-  const navigate = useNavigate();
 
   const { userInfo, setTest } = useOutletContext();
   const { gradeLevel } = userInfo;

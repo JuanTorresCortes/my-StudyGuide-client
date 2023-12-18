@@ -53,7 +53,7 @@ const TestArchive = () => {
             (
               test // Use slice() to create a copy of the array, then reverse() to reverse its order
             ) => (
-              <Grid item xs={12} sm={6} md={2} key={test._id}>
+              <Grid item xs={12} sm={6} md={4} key={test._id}>
                 <Card elevation={12}>
                   <CardContent>
                     <CardMedia

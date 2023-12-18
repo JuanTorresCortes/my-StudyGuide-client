@@ -74,6 +74,7 @@ function App() {
           setShouldRefresh={setShouldRefresh}
           setUserName={setUserName}
           setIsVerified={setIsVerified}
+          userInfo={userInfo}
         />
         <Outlet
           context={{
