@@ -213,6 +213,52 @@ const getTestByGradeAndSubject = async (grade, subject) => {
   }
 };
 
+const updateUser = async (userId, userData) => {
+  try {
+    const response = await axios.put(
+      `${baseUrl}/users/update-user/${userId}`,
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    // Check if error.response exists before trying to access .data
+    if (error.response) {
+      return error.response.data;
+    } else {
+      // Handle cases where error.response is undefined
+      console.error("Error in updating user:", error);
+      return { success: false, error: "An unexpected error occurred" };
+    }
+  }
+};
+
+const deleteCompletedTest = async (userId, testId) => {
+  try {
+    const response = await axios.delete(
+      `${baseUrl}/test-complete/delete-completed-test/${userId}/${testId}`
+    );
+    return response.data; // Return the response data
+  } catch (error) {
+    // Handle errors
+    if (error.response) {
+      // If the error has a response (like a server-side error)
+      console.error("Error in deleteCompletedTest:", error.response.data);
+      return error.response.data;
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error(
+        "No response received in deleteCompletedTest:",
+        error.request
+      );
+      return { success: false, error: "No response from server" };
+    } else {
+      // Something happened in setting up the request
+      console.error("Error setting up delete request:", error);
+      return { success: false, error: "Error setting up request" };
+    }
+  }
+};
+
 export {
   registerUser,
   loginUser,
@@ -230,4 +276,6 @@ export {
   registerAdmin,
   editTest,
   getTestByGradeAndSubject,
+  updateUser,
+  deleteCompletedTest,
 };

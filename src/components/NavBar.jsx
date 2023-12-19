@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { removeUserToken } from "../Auth/authLocalStorage";
 import {
@@ -8,8 +8,12 @@ import {
   Button,
   IconButton,
   Avatar,
+  Modal,
+  Fade,
+  Box,
 } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp"; // For the logout icon
+import UserUpdateForm from "./UserUpdateForm";
 
 const NavBar = ({
   isVerified,
@@ -17,7 +21,14 @@ const NavBar = ({
   userName,
   setUserName,
   setShouldRefresh,
+  userInfo,
+  setUserGrade,
+  userGrade,
 }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -46,12 +57,24 @@ const NavBar = ({
         </Typography>
         {isVerified ? (
           <>
-            <IconButton color="inherit">
+            <IconButton
+              color="inherit"
+              onClick={handleOpen}
+              sx={{
+                backgroundColor: "#151ad5", // Dark blue background
+                color: "white", // White text
+                borderRadius: 0, // Square edges
+                "&:hover": {
+                  backgroundColor: "#c00000", // Slightly darker blue on hover
+                },
+              }}
+            >
               <Avatar>{userName.charAt(0)}</Avatar>{" "}
               {/* Displaying the first letter of userName */}
             </IconButton>
+
             <Typography variant="body1" style={{ marginRight: "1rem" }}>
-              {userName}
+              {userName}:Grade {userInfo.gradeLevel}
             </Typography>
             <Button
               onClick={() => navigate("/archive")}
@@ -103,6 +126,38 @@ const NavBar = ({
           </>
         )}
       </Toolbar>
+
+      {/* Register Form Modal */}
+      <Modal
+        aria-labelledby="registration-form-modal"
+        aria-describedby="modal-to-register-new-users"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+      >
+        <Fade in={open}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 800,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 14,
+              outline: "none", // Removes the default focus outline
+            }}
+          >
+            <UserUpdateForm
+              handleClose={handleClose}
+              userInfo={userInfo}
+              setShouldRefresh={setShouldRefresh}
+              setUserGrade={setUserGrade}
+            />
+          </Box>
+        </Fade>
+      </Modal>
     </AppBar>
   );
 };
