@@ -102,7 +102,7 @@ const getTestKey = async (keyID) => {
 const addCompletedTest = async (userID, testScoreData) => {
   try {
     const response = await axios.put(
-      `http://localhost:4000/test-complete/add-completed-test/${userID}`,
+      `${baseUrl}/test-complete/add-completed-test/${userID}`,
       testScoreData
     );
     return response.data;

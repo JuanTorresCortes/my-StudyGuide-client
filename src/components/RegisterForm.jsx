@@ -146,14 +146,12 @@ const RegisterForm = ({ handleClose }) => {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
+                  <MenuItem value="3">3rd grade</MenuItem>
+                  <MenuItem value="4">4th grade</MenuItem>
                   <MenuItem value="5">5th grade</MenuItem>
                   <MenuItem value="6">6th grade</MenuItem>
                   <MenuItem value="7">7th grade</MenuItem>
                   <MenuItem value="8">8th grade</MenuItem>
-                  <MenuItem value="9">9th grade</MenuItem>
-                  <MenuItem value="10">10th grade</MenuItem>
-                  <MenuItem value="11">11th grade</MenuItem>
-                  <MenuItem value="12">12th grade</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
