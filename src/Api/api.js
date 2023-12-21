@@ -1,5 +1,10 @@
 import axios from "axios";
-const baseUrl = import.meta.env.VITE_BASE_URL;
+
+// src/api.js or wherever you configure Axios
+const baseUrl =
+  import.meta.env.VITE_APP_ENV === "production"
+    ? "/api"
+    : "http://localhost:4000/api";
 
 // // Function to register a new user by making a POST request to the server
 const registerUser = async (userData) => {
