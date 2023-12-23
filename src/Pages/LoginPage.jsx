@@ -14,11 +14,12 @@ const LoginPage = () => {
       <CssBaseline />
       <Grid
         item
-        xs={false}
-        sm={4}
+        xs={12}
+        sm={12}
         md={7}
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
+          // public/kids-on-computers.jpeg
+          backgroundImage: "url(/computer_kid.jpeg)",
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -28,6 +29,7 @@ const LoginPage = () => {
           backgroundPosition: "center",
         }}
       />
+
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{

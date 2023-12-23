@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// src/api.js or wherever you configure Axios
+// src/api.js or wherever configure Axios
 const baseUrl =
   import.meta.env.VITE_APP_ENV === "production"
     ? "/api"
